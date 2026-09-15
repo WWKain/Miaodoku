@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Miaodoku</title>
+	<link rel="stylesheet" href="res/style.css">
+</head>
+<body>
+	<div id="loadingScreen">
+		<img src="res/C.png">
+		<div class="loading-bar">
+			<div class="loading-progress"></div>
+			<span class="loading-text">Caricamento</span>
+		</div>
+	</div>
+	<div id="game">
+		<h1>Miaodoku</h1>
+		<div id="stats">
+			<div class="stat">
+				<div id="level" class="value">1</div>
+				<div class="label">Livello</div>
+			</div>
+			<div class="stat">
+				<div id="score" class="value">0</div>
+				<div class="label">Punti</div>
+			</div>
+			<div class="stat">
+				<div id="cats" class="value">1 / 4</div>
+				<div class="label">Gatti rimasti</div>
+			</div>
+		</div>
+		<div id="controls">
+			<button id="infoButton" class="control-button" type="button" aria-label="Regole" title="Regole">ⓘ</button>
+			<button id="themeButton" class="control-button" type="button" aria-label="Tema" title="Tema">◐</button>
+			<button id="skinButton" class="control-button" type="button" aria-label="Skin gatti" title="Skin gatti">
+				<svg class="cat-icon" viewBox="0 0 24 24" aria-hidden="true">
+					<path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6z" />
+					<circle cx="12" cy="12" r="2.5" /></svg>
+			</button>
+		</div>
+		<div id="board"></div>
+		<div id="gameControls">
+			<button id="resetButton" class="control-button" type="button" aria-label="Reset" title="Reset">↻</button>
+			<button id="helpButton" class="control-button" type="button" aria-label="Aiuto" title="Aiuto">
+				<svg class="bulb" viewBox="0 0 24 24" aria-hidden="true">
+					<path d="M9 21h6M10 17h4M12 3a7 7 0 0 0-4 12.7V18h8v-2.3A7 7 0 0 0 12 3z" /></svg>
+			</button>
+			<button id="nextButton" class="control-button" type="button" aria-label="Prossimo livello" title="Prossimo livello">&gt;</button>
+		</div>
+		<div id="message"></div>
+	</div>
+	<div id="levelOverlay" class="overlay" aria-hidden="true">
+		<div id="levelPopup" class="popup">
+			<button id="closeLevelPopup" type="button" class="close-button" aria-label="Chiudi">×</button>
+			<div class="level-image"><img src="res/L.png" alt=""></div>
+			<button id="nextLevelButton">Prossimo livello</button>
+		</div>
+	</div>
+	<div id="infoOverlay" class="overlay" aria-hidden="true">
+		<div id="infoPopup" role="dialog" class="popup" aria-modal="true" aria-labelledby="infoTitle">
+			<button id="closeInfo" type="button" class="close-button" aria-label="Chiudi">×</button>
+			<h3 id="infoTitle" style="color: var(--title)">🎮 Controlli:</h3>
+			<p>❌ <strong style="color: var(--title)">Click/tocco</strong>
+				<br>Inserisci una X su una casella vuota
+				<br>
+				<br>🐱 <strong style="color: var(--title)">Doppio click/tocco</strong>
+				<br>Inserisci un gatto su una casella vuota
+				<br>
+				<br>🟦 <strong style="color: var(--title)">Click/tocco su una casella occupata</strong>
+				<br>Svuota la casella occupata</p>
+			<h3 style="color: var(--title)">Come si gioca:</h3>
+			<p>🐱 Metti i gatti nelle caselle giuste, ma attenzione: i gatti non amano bisticciare!
+				<br>
+				<br>🐾 <strong style="color: var(--title)">Attenti ai litigi!</strong>
+				<br>A volte due gatti possono incontrarsi e iniziare a discutere
+				<br>Il gatto <strong>Alpha</strong> è il più coraggioso e rimane nella sua casella, mentre il gatto <strong>Beta</strong> preferisce scappare via
+				<br>Al suo posto rimane una X, così sai che quella casella non va più usata
+				<br>
+				<br>🐾 <strong style="color: var(--title)">Niente gatti nella stessa riga</strong>
+				<br>Due gatti sulla stessa riga si disturbano e litigano
+				<br>
+				<br>🐾 <strong style="color: var(--title)">Niente gatti nella stessa colonna</strong>
+				<br>Anche sopra e sotto non possono stare insieme
+				<br>
+				<br>🐾 <strong style="color: var(--title)">Ogni colore ha una sola zona</strong>
+				<br>Ogni colore è la zona di un gatto. Non mettere un altro gatto nello stesso colore
+				<br>
+				<br>🐾 <strong style="color: var(--title)">Niente gatti vicini</strong>
+				<br>I gatti hanno bisogno di spazio: se sono troppo vicini iniziano a bisticciare
+				<br>
+				<br>💡 <strong style="color: var(--title)">Aiuto</strong>
+				<br>Il pulsante aiuto mette delle X nelle caselle dove un gatto non può stare
+				<br>Attenzione però: l'aiuto non può correggere un gatto messo nel posto sbagliato!
+				<br>
+				<br>Trova il posto giusto per tutti i gatti e completa il livello! 🎉</p>
+		</div>
+	</div>
+	<div id="congratsOverlay" class="overlay" aria-hidden="true">
+		<div id="congratsPopup" class="popup">
+			<button id="closeCongrats" type="button" class="close-button" aria-label="Chiudi">×</button>
+			<h2 style="color: var(--title)">🎉 Congratulazioni!</h2>
+			<p>
+				Hai completato tutti i livelli! 🐱
+				<br><br>
+				Puoi continuare a giocare per accumulare punti e divertirti.
+			</p>
+		</div>
+	</div>
+	<script src="res/script.js"></script>
+</body>
+</html>
