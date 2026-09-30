@@ -1,0 +1,613 @@
+:root {
+    --foreground: #e7c142;
+    --background: #070011;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    min-height: 100%;
+}
+
+body {
+    min-height: 100vh;
+    background: var(--background);
+    color: var(--foreground);
+    font-family: system-ui;
+    overflow-x: hidden;
+}
+
+button,
+input {
+    font: inherit;
+    color: var(--foreground);
+}
+
+button {
+    cursor: pointer;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+}
+
+.svg-host {
+    color: var(--foreground);
+}
+
+.svg-host > svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    color: var(--foreground);
+}
+
+.page,
+.hero,
+.calculator,
+.methods,
+.date-container,
+.modal-content,
+.arcana-body,
+.arcana-description {
+    color: var(--foreground);
+}
+
+.page {
+    min-height: 100vh;
+    background: transparent;
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* HERO: circa 3/4 dello schermo, senza dimensioni fisse */
+.hero {
+    min-height: 75svh;
+    min-height: 75vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4vh 4vw;
+}
+
+.title-image {
+    width: min(48vw, 680px);
+    height: auto;
+}
+
+
+.calculator {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2vh 5vw 10vh;
+}
+
+.date-container {
+    width: min(90vw, 600px);
+}
+
+ .date-input-wrapper {
+    position: relative;
+    width: 100%;
+    display: block;
+    overflow: hidden;
+}
+
+/* L'SVG resta l'elemento che definisce esattamente la sagoma e viene sovrapposto al testo. */
+.date-decoration {
+    position: relative;
+    z-index: 4;
+    display: block;
+    width: 100%;
+    height: auto;
+    max-width: none;
+    pointer-events: none;
+    opacity: 1;
+}
+
+.date-input {
+    position: absolute;
+    inset: 0;
+    z-index: 6;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    outline: 0;
+    border-radius: 0;
+    background: transparent;
+    color: transparent;
+    caret-color: transparent;
+    text-align: center;
+    font-size: clamp(1.5rem, 5vw, 3rem);
+    font-weight: 600;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    padding: 0;
+    opacity: 1;
+    cursor: text;
+}
+
+.date-digits {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    display: grid;
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    color: var(--foreground);
+}
+
+.date-digit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+    height: 100%;
+    color: var(--foreground);
+    font-family: inherit;
+    font-size: clamp(1.5rem, 5vw, 3rem);
+    font-weight: 600;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+.date-input::placeholder {
+    color: transparent;
+    opacity: 0;
+}
+
+.date-input:focus {
+    outline: none;
+}
+
+/* La selezione resta quella nativa dell'input.
+   Il testo reale è trasparente: i caratteri visibili restano quelli già presenti nel layout. */
+.date-input::selection {
+    background: var(--foreground);
+    color: transparent;
+}
+
+.svg-color {
+    color: var(--foreground);
+}
+
+.date-error {
+    position: fixed;
+    left: 50%;
+    bottom: 8vh;
+    transform: translateX(-50%) translateY(20px);
+    min-height: 0;
+    margin: 0;
+    padding: .8rem 1.5rem;
+    border-radius: 999px;
+    background: var(--foreground);
+    color: var(--background);
+    text-align: center;
+    font-size: .9rem;
+    font-weight: 600;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 180ms ease, transform 180ms ease;
+    z-index: 2000;
+}
+
+.date-error.is-visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* Tutti i pulsanti condividono esattamente lo stesso stile. */
+.methods {
+    width: min(90vw, 900px);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.method-button {
+    width: 100%;
+    min-width: 0;
+    white-space: nowrap;
+    padding: .8rem 1.5rem;
+    border: 2px solid var(--foreground);
+    border-radius: 999px;
+    background: var(--foreground);
+    color: var(--background);
+    transition: opacity 180ms ease;
+}
+
+.method-button:hover:not(:disabled) {
+    background: var(--foreground);
+    color: var(--background);
+}
+
+.method-button:active:not(:disabled) {
+    background: var(--foreground);
+    color: var(--background);
+}
+
+.method-button:disabled {
+    opacity: .35;
+    cursor: not-allowed;
+}
+
+/* POPUP 3/4 DELLA PAGINA */
+.modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5vh 5vw;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 180ms ease, visibility 180ms ease;
+}
+
+.modal.is-open {
+    visibility: visible;
+    opacity: 1;
+}
+
+.modal-overlay {
+    position: absolute;
+    inset: 0;
+    background: var(--background);
+    opacity: .94;
+}
+
+.modal-content {
+    position: relative;
+    z-index: 1;
+    width: 75vw;
+    height: 75vh;
+    width: 75svw;
+    height: 75svh;
+    max-width: none;
+    max-height: none;
+    padding: clamp(1.5rem, 4vw, 4rem);
+    overflow: hidden;
+    background-color: var(--background);
+    border-radius: 24px;
+    box-shadow: 0 0 28px color-mix(in srgb, var(--foreground) 65%, transparent), 0 0 70px color-mix(in srgb, var(--foreground) 25%, transparent);
+    color: var(--foreground);
+    border: 0;
+    border-radius: 18px;
+}
+
+/* Cielo stellato interno al popup: pattern ripetuto su tutta l'area. */
+.modal-content::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--foreground);
+    opacity: .2;
+    mask-image: url("stars.svg");
+    mask-repeat: repeat;
+    mask-position: left top;
+    mask-size: 537px 300px;
+    -webkit-mask-image: url("stars.svg");
+    -webkit-mask-repeat: repeat;
+    -webkit-mask-position: left top;
+    -webkit-mask-size: 537px 300px;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.modal-content > * {
+    position: relative;
+    z-index: 1;
+}
+
+.modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 5;
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--foreground);
+    border-radius: 999px;
+    background: var(--foreground);
+    color: var(--background);
+    font-size: 1.5rem;
+    line-height: 1;
+    font-weight: 600;
+}
+
+.modal-close:hover,
+.modal-close:focus-visible,
+.modal-close:active {
+    background: var(--foreground);
+    color: var(--background);
+}
+
+.arcana-header {
+    text-align: center;
+    padding: 1rem 3rem 2rem;
+}
+
+#arcana-title {
+    color: var(--foreground);
+    font-size: clamp(1.4rem, 3vw, 2.5rem);
+    font-weight: 500;
+}
+
+#arcana-name {
+    margin-top: .5rem;
+    color: var(--foreground);
+    font-size: clamp(1.2rem, 2.5vw, 2rem);
+    font-weight: 400;
+}
+
+/* Desktop: tarocco a sinistra, descrizione a destra. */
+.arcana-body {
+    min-height: 0;
+    height: calc(100% - 120px);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: clamp(2rem, 5vw, 6rem);
+}
+
+.arcana-description {
+    order: 2;
+    flex: 1 1 50%;
+    min-width: 0;
+    display: flex;
+    align-items: flex-start;
+    overflow: hidden;
+    min-height: 0;
+}
+
+#arcana-text {
+    color: var(--foreground);
+    font-size: clamp(1rem, 1.5vw, 1.25rem);
+    line-height: 1.7;
+    white-space: pre-line;
+    overflow-wrap: anywhere;
+    word-break: normal;
+}
+
+.arcana-image-container {
+    order: 1;
+    flex: 1 1 50%;
+    min-width: 0;
+    min-height: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.arcana-image {
+    width: min(30vw, 400px);
+    max-width: 100%;
+    max-height: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+.modal.is-long-description .arcana-description {
+    position: static;
+    transform: none;
+    width: auto;
+    max-height: 100%;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    align-items: flex-start;
+}
+
+
+/* Description scrollbar */
+.arcana-description,
+.arcana-description::-webkit-scrollbar {
+}
+
+.arcana-description {
+    scrollbar-color: var(--foreground) transparent;
+    scrollbar-width: thin;
+}
+
+.arcana-description::-webkit-scrollbar {
+    width: 8px;
+}
+
+.arcana-description::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.arcana-description::-webkit-scrollbar-thumb {
+    background: var(--foreground);
+    border-radius: 999px;
+}
+
+@media (max-width: 767px) {
+    .hero {
+        min-height: 65svh;
+        min-height: 65vh;
+        padding: 3vh 4vw;
+    }
+
+    .title-image {
+        width: 65vw;
+    }
+
+    .calculator {
+        padding: 2vh 4vw 8vh;
+    }
+
+    .methods {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        width: min(90vw, 500px);
+    }
+
+    .method-button {
+        width: 100%;
+        min-height: 3rem;
+        padding: .7rem .6rem;
+        font-size: clamp(.78rem, 3.4vw, 1rem);
+        line-height: 1.15;
+        white-space: normal;
+    }
+
+    .modal {
+        padding: 2vh 2vw;
+    }
+
+    .modal-content {
+        width: 94vw;
+        height: 94vh;
+        width: 94svw;
+        height: 94svh;
+        padding: 1.25rem 1rem;
+    }
+
+    .arcana-header {
+        padding-top: 2rem;
+    }
+
+    /* Mobile: carta sopra, descrizione sotto. */
+    .arcana-body {
+        height: auto;
+        min-height: calc(100% - 120px);
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .arcana-image-container {
+        order: 1;
+        flex: 0 0 auto;
+        width: 100%;
+        height: auto;
+    }
+
+    .arcana-image {
+        width: min(55vw, 230px);
+        max-height: 32vh;
+        max-height: 32svh;
+    }
+
+    .arcana-description {
+        order: 2;
+        flex: 1 1 auto;
+        width: 100%;
+        min-height: 0;
+        max-height: 42vh;
+        max-height: 42svh;
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding: 0 .5rem 1rem 0;
+        scrollbar-gutter: stable;
+    }
+
+    .modal.is-long-description .arcana-description {
+        position: static;
+        transform: none;
+        width: 100%;
+        max-height: 34vh;
+        max-height: 34svh;
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding: 0 .5rem 1rem 0;
+        background: transparent;
+    }
+}
+
+@media (max-width: 767px) {
+    .methods {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        width: min(90vw, 500px);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        transition: none !important;
+    }
+}
+
+
+/* === FORZA ESATTAMENTE DUE COLONNE === */
+.methods {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    width: min(90vw, 900px);
+    gap: 1rem;
+}
+
+.method-button {
+    width: 100%;
+    min-width: 0;
+}
+
+@media (max-width: 767px) {
+    .methods {
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        width: min(90vw, 500px);
+    }
+}
+
+/* custom date caret/selection */
+.date-input::selection { background: transparent; color: transparent; }
+.date-digit.is-selected { background: color-mix(in srgb, var(--foreground) 25%, transparent); }
+.date-caret { position:absolute; z-index:5; width:2px; background:var(--foreground); pointer-events:none; animation: blink 1s step-end infinite; }
+@keyframes blink { 50% { opacity:0; } }
+
+
+/* Decorative stars background */
+.stars-background {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    display: block;
+    opacity: 0.2;
+    pointer-events: none;
+    z-index: 0;
+}
+
+body > *:not(.stars-background):not(.modal) {
+    position: relative;
+    z-index: 1;
+}
+
+/* Il modal deve restare fixed e sopra tutto il contenuto. */
+body > .modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+}

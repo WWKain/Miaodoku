@@ -1,207 +1,124 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calcola il tuo numero</title>
-
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f5f0e8;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-        }
-
-        .container {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
-            text-align: center;
-            width: 90%;
-            max-width: 400px;
-        }
-
-        h1 {
-            margin-bottom: 25px;
-        }
-
-        .campi {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .campo {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        label {
-            margin-bottom: 6px;
-            font-weight: bold;
-        }
-
-        input {
-            width: 70px;
-            padding: 10px;
-            text-align: center;
-            font-size: 18px;
-            border: 1px solid #aaa;
-            border-radius: 8px;
-            box-sizing: border-box;
-        }
-
-        #anno {
-            width: 90px;
-        }
-
-        button {
-            padding: 12px 30px;
-            font-size: 18px;
-            border: none;
-            border-radius: 8px;
-            background: #6b3fa0;
-            color: white;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background: #56317f;
-        }
-    </style>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+    <meta
+        name="description"
+        content="Calcola il tuo Arcano Maggiore attraverso la tua data di nascita."
+    >
+    <title>Tarocchi — Arcano Maggiore</title>
+    <link rel="stylesheet" href="res/tarots/style.css">
 </head>
-
 <body>
+    <div class="stars-background svg-host" data-svg="res/tarots/stars.svg" aria-hidden="true"></div>
 
-    <div class="container">
-        <h1>Calcola il tuo numero</h1>
-
-        <div class="campi">
-
-            <div class="campo">
-                <label for="giorno">Giorno</label>
-                <input
-                    type="text"
-                    id="giorno"
-                    maxlength="2"
-                    inputmode="numeric"
-                    placeholder="GG"
+    <main class="page">
+        <section class="hero">
+            <div class="title-image svg-host" data-svg="res/tarots/title.svg" aria-label="Tarocchi"></div>
+        </section>
+        <section class="calculator">
+            <div class="date-container">
+                <label
+                    for="birth-date"
+                    class="visually-hidden"
                 >
+                    Data di nascita
+                </label>
+                <div class="date-input-wrapper">
+                    <input
+                        id="birth-date"
+                        class="date-input"
+                        type="text"
+                        inputmode="numeric"
+                        autocomplete="bday"
+                        maxlength="8"
+                        aria-label="Data di nascita"
+                    >
+                    <div class="date-digits" aria-hidden="true">
+                        <span class="date-digit"></span>
+                        <span class="date-digit"></span>
+                        <span class="date-digit"></span>
+                        <span class="date-digit"></span>
+                        <span class="date-digit"></span>
+                        <span class="date-digit"></span>
+                        <span class="date-digit"></span>
+                        <span class="date-digit"></span>
+                    </div>
+                    <div class="date-decoration svg-host" data-svg="res/tarots/date.svg" aria-hidden="true"></div>
+                </div>
+                <p
+                    id="date-error"
+                    class="date-error"
+                    aria-live="polite"
+                ></p>
             </div>
-
-            <div class="campo">
-                <label for="mese">Mese</label>
-                <input
-                    type="text"
-                    id="mese"
-                    maxlength="2"
-                    inputmode="numeric"
-                    placeholder="MM"
+            <div
+                class="methods"
+                aria-label="Metodi di calcolo"
+            >
+                <button
+                    type="button"
+                    class="method-button"
+                    data-method="digit"
                 >
-            </div>
-
-            <div class="campo">
-                <label for="anno">Anno</label>
-                <input
-                    type="text"
-                    id="anno"
-                    maxlength="4"
-                    inputmode="numeric"
-                    placeholder="AAAA"
+                    Somma delle cifre
+                </button>
+                <button
+                    type="button"
+                    class="method-button"
+                    data-method="full"
                 >
+                    Somma completa
+                </button>
+                <button
+                    type="button"
+                    class="method-button"
+                    data-method="reduced"
+                >
+                    Riduzione numerologica
+                </button>
             </div>
-
+        </section>
+    </main>
+    <div
+        id="arcana-modal"
+        class="modal"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="arcana-title"
+    >
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <button
+                id="modal-close"
+                class="modal-close"
+                type="button"
+                aria-label="Chiudi"
+            >
+                ×
+            </button>
+            <div class="arcana-header">
+                <h1 id="arcana-title">
+                    Arcano Maggiore
+                </h1>
+                <h2 id="arcana-name"></h2>
+            </div>
+            <div class="arcana-body">
+                <div class="arcana-image-container">
+                    <div id="arcana-image" class="arcana-image svg-host" aria-hidden="true"></div>
+                </div>
+                <div class="arcana-description">
+                    <p id="arcana-text"></p>
+                </div>
+            </div>
         </div>
-
-        <button onclick="calcola()">Calcola</button>
     </div>
-
-    <script>
-        function calcola() {
-
-            const giorno = document.getElementById("giorno").value.trim();
-            const mese = document.getElementById("mese").value.trim();
-            const anno = document.getElementById("anno").value.trim();
-
-            // Controllo dei campi vuoti
-            if (giorno === "" || mese === "" || anno === "") {
-                alert("Compila i campi soprastanti");
-                return;
-            }
-
-            // Controllo che siano presenti solo numeri
-            if (!/^\d{1,2}$/.test(giorno) ||
-                !/^\d{1,2}$/.test(mese) ||
-                !/^\d{4}$/.test(anno)) {
-
-                alert("Inserisci dei valori validi");
-                return;
-            }
-
-            const giornoNumero = parseInt(giorno, 10);
-            const meseNumero = parseInt(mese, 10);
-
-            // Controllo giorno
-            if (giornoNumero < 1 || giornoNumero > 31) {
-                alert("Il giorno deve essere compreso tra 1 e 31");
-                return;
-            }
-
-            // Controllo mese
-            if (meseNumero < 1 || meseNumero > 12) {
-                alert("Il mese deve essere compreso tra 1 e 12");
-                return;
-            }
-
-            /*
-             * CALCOLO
-             *
-             * Esempio:
-             * 25 / 07 / 1998
-             *
-             * 25 + 7 + 19 + 98 = 149
-             *
-             * 149 è superiore a 21,
-             * quindi:
-             *
-             * 1 + 4 + 9 = 14
-             *
-             * Risultato = 14
-             */
-
-            const primaParteAnno = parseInt(anno.substring(0, 2), 10);
-            const secondaParteAnno = parseInt(anno.substring(2, 4), 10);
-
-            let numero =
-                giornoNumero +
-                meseNumero +
-                primaParteAnno +
-                secondaParteAnno;
-
-            // Se supera 21, si sommano le cifre
-            while (numero > 21) {
-
-                numero = String(numero)
-                    .split("")
-                    .reduce((somma, cifra) => {
-                        return somma + parseInt(cifra, 10);
-                    }, 0);
-            }
-
-            // Cerca su Google l'Arcano corrispondente
-            const ricerca = encodeURIComponent("Arcano numero " + numero);
-
-            window.location.href =
-                "https://www.google.com/search?q=" + ricerca;
-        }
-    </script>
-
+    <script src="res/tarots/arcana-data.js"></script>
+    <script src="res/tarots/script.js"></script>
 </body>
 </html>
