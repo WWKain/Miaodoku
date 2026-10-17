@@ -1,0 +1,648 @@
+:root {
+    --foreground: #ccb74d;
+    --background: #000000;
+    --galaxy: #090010;
+    --lightgalaxy: #100010;
+}
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+html, body {
+    min-height: 100%;
+}
+body {
+    min-height: 100vh;
+    background: linear-gradient(to bottom, var(--galaxy) 20%, var(--background) 100%);
+    background-attachment: fixed;
+    color: var(--foreground);
+    font-family: system-ui;
+    overflow-x: hidden;
+}
+button, input {
+    font: inherit;
+    color: var(--foreground);
+}
+button {
+    cursor: pointer;
+}
+img {
+    display: block;
+    max-width: 100%;
+}
+.svg-host {
+    color: var(--foreground);
+}
+.svg-host > svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    color: var(--foreground);
+}
+.page, .hero, .calculator, .methods, .date-container, .modal-content, .arcana-body, .arcana-description {
+    color: var(--foreground);
+}
+.page {
+    min-height: 100vh;
+    background: transparent;
+}
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+.hero {
+    min-height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 25vh;
+}
+.title-image {
+    height: auto;
+}
+.calculator {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 7rem 5vw 10vh;
+}
+.title-image, .date-container {
+    width: min(80vw, 500px);
+}
+.date-input-wrapper {
+    position: relative;
+    width: 100%;
+    display: block;
+    overflow: hidden;
+}
+.date-decoration {
+    position: relative;
+    z-index: 4;
+    display: block;
+    width: 100%;
+    height: auto;
+    max-width: none;
+    pointer-events: none;
+    opacity: 1;
+}
+.date-input {
+    position: absolute;
+    inset: 0;
+    z-index: 6;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    outline: 0;
+    border-radius: 0;
+    background: transparent;
+    color: transparent;
+    caret-color: transparent;
+    text-align: center;
+    font-size: clamp(1.5rem, 5vw, 3rem);
+    font-weight: 600;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    padding: 0;
+    opacity: 1;
+    cursor: text;
+}
+.date-digits {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    display: grid;
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    color: var(--foreground);
+}
+.date-digit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+    height: 100%;
+    color: var(--foreground);
+    font-family: inherit;
+    font-size: clamp(1.5rem, 5vw, 3rem);
+    font-weight: 600;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+.date-input::placeholder {
+    color: transparent;
+    opacity: 0;
+}
+.date-input:focus {
+    outline: none;
+}
+.date-input::selection {
+    background: transparent;
+    color: transparent;
+}
+.date-digit.is-selected {
+    background: color-mix(in srgb, var(--foreground) 25%, transparent);
+}
+.date-caret {
+    position: absolute;
+    z-index: 5;
+    width: 2px;
+    background: var(--foreground);
+    pointer-events: none;
+    animation: blink 1s step-end infinite;
+}
+@keyframes blink {
+    50% {
+        opacity: 0;
+    }
+}
+.svg-color {
+    color: var(--foreground);
+}
+.date-error {
+    position: fixed;
+    left: 50%;
+    bottom: 8vh;
+    transform: translateX(-50%) translateY(20px);
+    min-height: 0;
+    margin: 0;
+    padding: .8rem 1.5rem;
+    border-radius: 999px;
+    background: var(--foreground);
+    color: var(--background);
+    text-align: center;
+    font-size: .9rem;
+    font-weight: 600;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 180ms ease, transform 180ms ease;
+    z-index: 2000;
+}
+.date-error.is-visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+.methods {
+    width: min(90vw, 900px);
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 1rem;
+    margin-top: 7rem;
+}
+.method-button {
+    width: 100%;
+    min-width: 0;
+    white-space: nowrap;
+    padding: .8rem 1.5rem;
+    border: 2px solid var(--foreground);
+    border-radius: 999px;
+    background: var(--foreground);
+    color: var(--background);
+    transition: opacity 180ms ease;
+}
+.method-button-wide {
+    grid-column: 1 / -1;
+}
+.method-button:hover:not(:disabled), .method-button:active:not(:disabled) {
+    background: var(--foreground);
+    color: var(--background);
+}
+.method-button:disabled {
+    opacity: .35;
+    cursor: not-allowed;
+}
+.modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5vh 5vw;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 180ms ease, visibility 180ms ease;
+}
+.modal.is-open {
+    visibility: visible;
+    opacity: 1;
+}
+.modal-overlay {
+    position: absolute;
+    inset: 0;
+    background: var(--background);
+    opacity: .94;
+}
+.modal-content {
+    position: relative;
+    z-index: 1;
+    height: 75vh;
+    height: 75svh;
+    width: 75vw;
+    width: 75svw;
+    max-width: none;
+    max-height: none;
+    padding: clamp(1.5rem, 4vw, 4rem);
+    overflow: hidden;
+    background: linear-gradient(to bottom, var(--lightgalaxy) 0%, var(--background) 100%);
+    box-shadow: 0 0 28px color-mix(in srgb, var(--foreground) 65%, transparent), 0 0 70px color-mix(in srgb, var(--foreground) 25%, transparent);
+    color: var(--foreground);
+    border: 0;
+    border-radius: 24px;
+}
+.modal-content::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--foreground);
+    opacity: .2;
+    mask-image: url("stars.svg");
+    mask-repeat: repeat;
+    mask-position: left top;
+    mask-size: 537px 300px;
+    -webkit-mask-image: url("stars.svg");
+    -webkit-mask-repeat: repeat;
+    -webkit-mask-position: left top;
+    -webkit-mask-size: 537px 300px;
+    pointer-events: none;
+    z-index: 0;
+}
+.modal-content > * {
+    position: relative;
+    z-index: 1;
+}
+.modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 5;
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--foreground);
+    border-radius: 999px;
+    background: var(--foreground);
+    color: var(--background);
+    font-size: 1.5rem;
+    line-height: 1;
+    font-weight: 600;
+}
+.modal-close:hover, .modal-close:focus-visible, .modal-close:active {
+    background: var(--foreground);
+    color: var(--background);
+}
+.personality-soul-content {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+.personality-soul-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    flex: 1;
+}
+.personality-soul-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5%;
+}
+.personality-soul-column h2 {
+    font-size: clamp(1.2rem, 2.5vw, 2rem);
+    text-align: center;
+    font-weight: 400;
+}
+.soul-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    flex: 1;
+    border: none;
+    background: transparent;
+    color: var(--foreground);
+    cursor: pointer;
+}
+.soul-card:hover .soul-card-image,
+.soul-card:focus-visible .soul-card-image {
+    background: transparent;
+    box-shadow: none;
+    filter: drop-shadow(0 0 8px color-mix(in srgb, var(--foreground) 100%, transparent)) drop-shadow(0 0 30px color-mix(in srgb, var(--foreground) 70%, transparent));
+}
+.soul-card-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    height: auto;
+}
+.soul-card-image svg {
+    width: auto;
+    height: 100%;
+    object-fit: contain;
+}
+.arcana-header {
+    text-align: center;
+    padding: 1rem 3rem 2rem;
+}
+#arcana-title {
+    color: var(--foreground);
+    font-size: clamp(1.4rem, 3vw, 2.5rem);
+    font-weight: 500;
+}
+#arcana-name {
+    margin-top: .5rem;
+    color: var(--foreground);
+    font-size: clamp(1.2rem, 2.5vw, 2rem);
+    font-weight: 400;
+}
+.arcana-body {
+    min-height: 0;
+    height: calc(100% - 160px);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.arcana-description {
+    order: 2;
+    flex: 1 1 50%;
+    min-height: 0;
+    min-width: 0;
+    display: flex;
+    align-items: flex-start;
+    overflow: hidden;
+    scrollbar-color: var(--foreground) transparent;
+    scrollbar-width: thin;
+}
+.arcana-description::-webkit-scrollbar {
+    width: 8px;
+}
+.arcana-description::-webkit-scrollbar-track {
+    background: transparent;
+}
+.arcana-description::-webkit-scrollbar-thumb {
+    background: var(--foreground);
+    border-radius: 999px;
+}
+#arcana-text {
+    color: var(--foreground);
+    font-size: clamp(1rem, 1.5vw, 1.25rem);
+    line-height: 1.7;
+    white-space: pre-line;
+    overflow-wrap: anywhere;
+    word-break: normal;
+}
+.arcana-image-container {
+    order: 1;
+    flex: 1 1 20%;
+    min-width: 0;
+    min-height: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.arcana-image {
+    width: min(30vw, 400px);
+    max-width: 100%;
+    max-height: 100%;
+    height: auto;
+    object-fit: contain;
+}
+.modal.is-long-description .arcana-description {
+    position: static;
+    transform: none;
+    width: auto;
+    max-height: 100%;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    align-items: flex-start;
+}
+@media (max-width: 767px) {
+    .hero {
+        min-height: auto;
+        padding: 20vh 4vw 0;
+    }
+    .calculator {
+        padding: 4rem 4vw 8vh;
+    }
+    .methods {
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        width: min(90vw, 500px);
+        margin-top: 4rem;
+    }
+    .method-button {
+        width: 100%;
+        min-height: 3rem;
+        padding: .7rem .6rem;
+        font-size: clamp(.78rem, 3.4vw, 1rem);
+        line-height: 1.15;
+        white-space: normal;
+    }
+    .modal {
+        padding: 4%;
+    }
+    .modal-content {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        width: 100%;
+        padding: 7%;
+    }
+    .personality-soul-grid {
+        grid-template-columns: 1fr;
+        gap: 2%;
+        min-height: 0;
+    }
+    .personality-soul-column, .soul-card {
+        min-height: 0;
+    }
+    .soul-card-image {
+        height: 80%;
+    }
+    .arcana-header {
+        flex: 0 0 auto;
+        padding-top: 7%;
+    }
+    .arcana-body {
+        height: auto;
+        min-height: 0;
+        display: flex;
+        flex: 1 1 0;
+        flex-direction: column;
+        gap: 2%;
+    }
+    .arcana-image-container {
+        order: 1;
+        flex: 0 0 auto;
+        width: auto;
+        height: 40%;
+    }
+    .arcana-image {
+        width: auto;
+        height: auto;
+        object-fit: contain;
+    }
+    .arcana-description, .modal.is-long-description .arcana-description {
+        order: 2;
+        position: static;
+        transform: none;
+        flex: 1 1 auto;
+        width: 100%;
+        min-height: 0;
+        overflow-y: auto;
+        overflow-x: hidden;
+        margin-top: 6%;
+        background: transparent;
+        box-sizing: border-box;
+        scrollbar-gutter: stable;
+    }
+}
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+    .modal {
+        padding: 4%;
+    }
+    .modal-content {
+        width: 100%;
+        height: 100%;
+        padding: 4%;
+        display: flex;
+        flex-direction: column;
+    }
+    .personality-soul-grid {
+        grid-template-columns: 1fr;
+        gap: 2%;
+        min-height: 0;
+    }
+    .personality-soul-column, .soul-card {
+        min-height: 0;
+    }
+    .soul-card-image {
+        height: 80%;
+    }
+    .arcana-header {
+        flex: 0 0 auto;
+        padding-top: 7%;
+    }
+    .arcana-body {
+        height: auto;
+        min-height: 0;
+        display: flex;
+        flex: 1 1 0;
+        flex-direction: column;
+        gap: 4%;
+    }
+    .arcana-image-container {
+        order: 1;
+        flex: 0 0 auto;
+        width: auto;
+        height: 40%;
+    }
+    .arcana-image {
+        width: auto;
+        height: auto;
+        object-fit: contain;
+    }
+    .arcana-description, .modal.is-long-description .arcana-description {
+        position: static;
+        transform: none;
+        flex: 1 1 auto;
+        width: 100%;
+        min-height: 0;
+        margin-top: 4%;
+        overflow-y: auto;
+        overflow-x: hidden;
+        background: transparent;
+        box-sizing: border-box;
+        scrollbar-gutter: stable;
+    }
+}
+@media (min-width: 768px) and (max-width: 1280px) and (orientation: landscape) {
+    .modal-content {
+        width: 100%;
+        height: 100%;
+        padding: 4%;
+        display: flex;
+        flex-direction: column;
+    }
+    .personality-soul-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 2%;
+        min-height: 0;
+    }
+    .personality-soul-column, .soul-card {
+        min-height: 0;
+    }
+    .soul-card-image {
+        height: 80%;
+    }
+    .arcana-body {
+        height: auto;
+        min-height: 0;
+        display: flex;
+        flex: 1 1 0;
+        flex-direction: row;
+        gap: 4%;
+    }
+    .arcana-image-container {
+        order: 1;
+        flex: 0 0 auto;
+        width: auto;
+        height: 80%;
+    }
+    .arcana-description, .modal.is-long-description .arcana-description {
+        position: static;
+        transform: none;
+        flex: 1 1 auto;
+        width: 100%;
+        min-height: 0;
+        overflow-y: auto;
+        overflow-x: hidden;
+        background: transparent;
+        box-sizing: border-box;
+        scrollbar-gutter: stable;
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        transition: none !important;
+    }
+}
+.stars-background {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    display: block;
+    opacity: 0.2;
+    pointer-events: none;
+    z-index: 0;
+}
+body > *:not(.stars-background):not(.modal) {
+    position: relative;
+    z-index: 1;
+}
+body > .modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+}
