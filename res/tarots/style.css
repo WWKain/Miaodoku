@@ -19,6 +19,16 @@ body {
     color: var(--foreground);
     font-family: system-ui;
     overflow-x: hidden;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+input, textarea {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
 }
 button, input {
     font: inherit;
@@ -434,27 +444,36 @@ img {
     overflow-x: hidden;
     align-items: flex-start;
 }
-@media (max-width: 767px) {
+@media (max-width: 767px) and (orientation: portrait) {
     .hero {
-        min-height: auto;
-        padding: 20vh 4vw 0;
+        padding-top: 20%;
+        padding-bottom: 20%;
+    }
+    .title-image, .date-container {
+        width: 80%;
     }
     .calculator {
-        padding: 4rem 4vw 8vh;
+        padding: 0;
     }
     .methods {
-        display: grid !important;
-        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-        width: min(90vw, 500px);
-        margin-top: 4rem;
+        width: 80%;
+        margin-top: 20%;
+        margin-bottom: 20%;
     }
     .method-button {
-        width: 100%;
-        min-height: 3rem;
-        padding: .7rem .6rem;
-        font-size: clamp(.78rem, 3.4vw, 1rem);
-        line-height: 1.15;
+        height: 4rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 5%;
+        font-size: 90%;
+        line-height: 115%;
         white-space: normal;
+    }
+    .method-button-wide {
+        grid-column: 1;
+        width: 210%;
     }
     .modal {
         padding: 4%;
@@ -512,6 +531,77 @@ img {
         margin-top: 6%;
         background: transparent;
         box-sizing: border-box;
+        scrollbar-gutter: stable;
+    }
+}
+@media (max-width: 767px) and (orientation: landscape) {
+    .hero {
+        padding-top: 8%;
+        padding-bottom: 8%;
+    }
+    .title-image, .date-container {
+        width: 60%;
+    }
+    .calculator {
+        padding: 0;
+    }
+    .methods {
+        width: 80%;
+        margin-top: 8%;
+        margin-bottom: 8%;
+    }
+    .method-button {
+        padding: 5%;
+        font-size: 95%;
+        line-height: 115%;
+        white-space: normal;
+    }
+    .method-button-wide {
+        grid-column: 1;
+        width: 205%;
+    }
+    .modal {
+        padding: 4%;
+    }
+    .modal-content {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        width: 100%;
+        padding: 4%;
+    }
+    .personality-soul-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 4%;
+        min-height: 0;
+    }
+    .personality-soul-column, .soul-card {
+        min-height: 0;
+    }
+    .soul-card-image {
+        height: 80%;
+    }
+    .arcana-header {
+        padding: 0;
+        padding-bottom: 2%;
+    }
+    .arcana-body {
+        height: auto;
+        min-height: 0;
+        display: flex;
+        flex: 1 1 0;
+        flex-direction: row;
+        gap: 4%;
+    }
+    .arcana-image-container {
+        order: 1;
+        flex: 0 0 auto;
+        width: auto;
+        height: 80%;
+    }
+    .arcana-description, .modal.is-long-description .arcana-description {
+        flex: 1 1 auto;
+        width: 100%;
         scrollbar-gutter: stable;
     }
 }
@@ -575,6 +665,9 @@ img {
     }
 }
 @media (min-width: 768px) and (max-width: 1280px) and (orientation: landscape) {
+    .modal {
+        padding: 4%;
+    }
     .modal-content {
         width: 100%;
         height: 100%;
@@ -584,7 +677,7 @@ img {
     }
     .personality-soul-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 2%;
+        gap: 4%;
         min-height: 0;
     }
     .personality-soul-column, .soul-card {
