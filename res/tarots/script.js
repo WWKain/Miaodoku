@@ -299,6 +299,7 @@ async function showArcana(number) {
 	if (current) current.replaceWith(host);
 	await inlineSvgHost(host);
 	arcanaText.textContent = arcana.description;
+	document.querySelector(".arcana-description").scrollTop = 0;
 	modal.classList.toggle("is-long-description", arcana.description.length > 420);
 	modal.classList.add("is-open");
 	modal.setAttribute("aria-hidden", "false");
@@ -426,3 +427,6 @@ if (window.ResizeObserver) {
 	if (dateWrapper) new ResizeObserver(fitDateText).observe(dateWrapper);
 }
 inlineStaticSvgs();
+document.addEventListener("contextmenu", event => {
+	event.preventDefault();
+});
